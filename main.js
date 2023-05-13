@@ -1,54 +1,31 @@
-var form = document.getElementById('addForm');
-var itemList = document.getElementById('items');
-var editbtn=document.createElement('button');
-editbtn.className='btn btn-sm btn-dark float-right'
-editbtn.appendChild(document.createTextNode('Edit'))
+const myform=document.querySelector("#my-form")
+const nameInput=document.querySelector("#name")
+const emailInput=document.querySelector("#email")
+const msg=document.querySelector(".msg")
+const userList=document.querySelector("#Users")
 
+// add event listener
+myform.addEventListener('submit',onsubmit)
+let x=1;
 
-// Form submit event
-form.addEventListener('submit', addItem);
-// Delete event
-itemList.addEventListener('click', removeItem);
-
-
-// Add item
-function addItem(e){
-  e.preventDefault();
-
-  // Get input value
-  var newItem = document.getElementById('item').value;
-
-  // Create new li element
-  var li = document.createElement('li');
-  // Add class
-  li.className = 'list-group-item';
-  // Add text node with input value
-  li.appendChild(document.createTextNode(newItem));
-
-  // Create del button element
-  var deleteBtn = document.createElement('button');
-
-  // Add classes to del button
-  deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
-
-  // Append text node
-  deleteBtn.appendChild(document.createTextNode('X'));
-
-  // Append button to li
-  li.appendChild(editbtn);
-  li.appendChild(deleteBtn);
-  
-  // Append li to list
-  itemList.appendChild(li);
-}
-
-// Remove item
-function removeItem(e){
-  if(e.target.classList.contains('delete')){
-    if(confirm('Are You Sure?')){
-      var li = e.target.parentElement;
-      itemList.removeChild(li);
+function onsubmit(e){
+    e.preventDefault();
+    if (nameInput.value==='' || emailInput.value===''){
+        msg.classList.add('error');
+        msg.innerHTML='Please inter all fields'
+        setTimeout(()=> msg.remove(),3000)
     }
-  }
+    else {
+        const li=document.createElement("li");
+        li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}`))
+        userList.appendChild(li)
+        // Reset name and email
+        setTimeout(()=>  (nameInput.value='',
+        emailInput.value=''),1000);
+        localStorage.removeItem('UserList')
+       localStorage.setItem(x,`${nameInput.value}:${emailInput.value}`)
+       x=x+1
+      
+    }
 }
 
